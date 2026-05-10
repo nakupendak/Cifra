@@ -172,11 +172,20 @@
             min-height: 100%;
             margin: 0;
             background-color: #101415;
-            overscroll-behavior-y: none;
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         body {
             min-height: 100dvh;
+            overflow-y: auto;
+        }
+
+        #region-guide-page,
+        #modal-content {
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
