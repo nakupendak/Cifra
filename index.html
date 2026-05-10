@@ -187,6 +187,47 @@
             overscroll-behavior-y: contain;
             -webkit-overflow-scrolling: touch;
         }
+
+        #menu-backdrop.menu-backdrop-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #side-menu.side-menu-open {
+            transform: translateX(0);
+        }
+
+        .side-menu-item {
+            opacity: 0;
+            transform: translateX(-14px);
+            transition:
+                opacity 300ms ease,
+                transform 300ms ease,
+                background-color 200ms ease,
+                border-color 200ms ease,
+                color 200ms ease;
+        }
+
+        .side-menu-open .side-menu-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .side-menu-open .side-menu-item:nth-child(1) {
+            transition-delay: 80ms;
+        }
+
+        .side-menu-open .side-menu-item:nth-child(2) {
+            transition-delay: 130ms;
+        }
+
+        .side-menu-open .side-menu-item:nth-child(3) {
+            transition-delay: 180ms;
+        }
+
+        .side-menu-open .side-menu-item:nth-child(4) {
+            transition-delay: 230ms;
+        }
     </style>
 </head>
 
@@ -194,18 +235,127 @@
     <!-- TopAppBar -->
     <header
         class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-zinc-950/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-        <button
-            class="text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
+        <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть меню"
+            class="w-11 h-11 -ml-3 text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
             <span class="material-symbols-outlined">menu</span>
         </button>
         <h1 class="text-[28px] font-bold leading-none text-lime-400">
             Цифра
         </h1>
-        <button
-            class="text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
+        <button aria-label="Корзина"
+            class="w-11 h-11 -mr-3 text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
             <span class="material-symbols-outlined">shopping_cart</span>
         </button>
     </header>
+
+    <!-- Side Menu -->
+    <div id="menu-backdrop"
+        class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+    <aside id="side-menu" aria-hidden="true"
+        class="fixed left-0 top-0 z-[80] h-dvh w-[86vw] max-w-[340px] -translate-x-full transform bg-zinc-950/95 border-r border-white/10 shadow-[18px_0_60px_rgba(0,0,0,0.55)] backdrop-blur-2xl transition-transform duration-300 ease-out overflow-hidden">
+        <div
+            class="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_28%_18%,rgba(163,230,53,0.22),transparent_45%)] pointer-events-none">
+        </div>
+        <div class="relative flex h-full flex-col px-5 pt-4 pb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-caption uppercase text-primary-container/80">Меню</p>
+                    <h2 class="font-headline-md text-primary-fixed leading-tight">Цифра</h2>
+                </div>
+                <button id="menu-close" aria-label="Закрыть меню"
+                    class="w-10 h-10 rounded-full bg-surface-container/70 text-on-surface-variant border border-white/10 flex items-center justify-center transition-colors hover:text-primary-container hover:border-primary-container/40 active:scale-95">
+                    <span class="material-symbols-outlined text-[22px]">close</span>
+                </button>
+            </div>
+
+            <div class="mt-8 space-y-3" id="side-menu-categories">
+                <button data-category="all"
+                    class="menu-category-btn side-menu-item w-full rounded-xl border border-primary-container/30 bg-primary-container text-on-primary px-4 py-4 text-left shadow-[0_0_24px_rgba(163,230,53,0.28)] active:scale-[0.98]">
+                    <span class="flex items-center justify-between gap-3">
+                        <span class="flex min-w-0 items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[21px]">apps</span>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block font-label-bold text-base leading-tight">Все товары</span>
+                                <span class="block font-caption opacity-75 mt-1">Весь каталог</span>
+                            </span>
+                        </span>
+                        <span class="menu-check material-symbols-outlined text-[22px]">check_circle</span>
+                    </span>
+                </button>
+                <button data-category="appstore"
+                    class="menu-category-btn side-menu-item w-full rounded-xl border border-white/10 bg-surface-container/50 text-on-surface-variant px-4 py-4 text-left backdrop-blur-md hover:border-primary-container/40 hover:text-primary-container active:scale-[0.98]">
+                    <span class="flex items-center justify-between gap-3">
+                        <span class="flex min-w-0 items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary-container text-[21px]">redeem</span>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block font-label-bold text-base leading-tight">Apple
+                                    Турция</span>
+                                <span class="block font-caption mt-1">Подарочные карты ₺</span>
+                            </span>
+                        </span>
+                        <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
+                    </span>
+                </button>
+                <button data-category="apple-us"
+                    class="menu-category-btn side-menu-item w-full rounded-xl border border-white/10 bg-surface-container/50 text-on-surface-variant px-4 py-4 text-left backdrop-blur-md hover:border-primary-container/40 hover:text-primary-container active:scale-[0.98]">
+                    <span class="flex items-center justify-between gap-3">
+                        <span class="flex min-w-0 items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
+                                <span
+                                    class="material-symbols-outlined text-primary-container text-[21px]">public</span>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block font-label-bold text-base leading-tight">Apple
+                                    США</span>
+                                <span class="block font-caption mt-1">Подарочные карты $</span>
+                            </span>
+                        </span>
+                        <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
+                    </span>
+                </button>
+                <button data-category="psn"
+                    class="menu-category-btn side-menu-item w-full rounded-xl border border-white/10 bg-surface-container/50 text-on-surface-variant px-4 py-4 text-left backdrop-blur-md hover:border-primary-container/40 hover:text-primary-container active:scale-[0.98]">
+                    <span class="flex items-center justify-between gap-3">
+                        <span class="flex min-w-0 items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
+                                <span
+                                    class="material-symbols-outlined text-primary-container text-[21px]">sports_esports</span>
+                            </span>
+                            <span class="min-w-0">
+                                <span class="block font-label-bold text-base leading-tight">PSN</span>
+                                <span class="block font-caption mt-1">PlayStation Турция</span>
+                            </span>
+                        </span>
+                        <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
+                    </span>
+                </button>
+            </div>
+
+            <button id="menu-region-guide"
+                class="mt-auto flex items-center justify-between rounded-xl border border-white/10 bg-surface-container/35 px-4 py-4 text-left text-on-surface-variant transition-colors hover:border-primary-container/40 hover:text-primary-container active:scale-[0.98]">
+                <span class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20">
+                        <span class="material-symbols-outlined text-primary-container text-[21px]">help</span>
+                    </span>
+                    <span>
+                        <span class="block font-label-bold text-on-surface">Смена региона</span>
+                        <span class="block font-caption mt-1">Инструкция App Store</span>
+                    </span>
+                </span>
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </div>
+    </aside>
     <!-- Main Canvas -->
     <main class="pt-[80px] pb-10 px-4 space-y-6">
         <!-- Promo Banner -->
@@ -781,27 +931,103 @@
                 haptic.impactOccurred(type);
             };
 
+            const lockPage = () => {
+                document.body.style.overflow = 'hidden';
+            };
+
+            const unlockPage = () => {
+                document.body.style.overflow = '';
+            };
+
+            // Side Menu Logic
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuClose = document.getElementById('menu-close');
+            const menuBackdrop = document.getElementById('menu-backdrop');
+            const sideMenu = document.getElementById('side-menu');
+            const menuRegionGuideBtn = document.getElementById('menu-region-guide');
+            let menuCloseTimer;
+
+            const openMenu = () => {
+                clearTimeout(menuCloseTimer);
+                menuBackdrop?.classList.add('menu-backdrop-visible');
+                sideMenu?.classList.add('side-menu-open');
+                sideMenu?.setAttribute('aria-hidden', 'false');
+                menuToggle?.setAttribute('aria-expanded', 'true');
+                lockPage();
+            };
+
+            const closeMenu = ({ keepLocked = false } = {}) => {
+                menuBackdrop?.classList.remove('menu-backdrop-visible');
+                sideMenu?.classList.remove('side-menu-open');
+                sideMenu?.setAttribute('aria-hidden', 'true');
+                menuToggle?.setAttribute('aria-expanded', 'false');
+
+                clearTimeout(menuCloseTimer);
+                menuCloseTimer = setTimeout(() => {
+                    if (!keepLocked) {
+                        unlockPage();
+                    }
+                }, 300);
+            };
+
+            if (menuToggle && menuClose && menuBackdrop && sideMenu) {
+                menuToggle.addEventListener('click', () => {
+                    triggerHaptic('light');
+                    openMenu();
+                });
+
+                menuClose.addEventListener('click', () => {
+                    triggerHaptic('light');
+                    closeMenu();
+                });
+
+                menuBackdrop.addEventListener('click', () => {
+                    triggerHaptic('light');
+                    closeMenu();
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && sideMenu.classList.contains('side-menu-open')) {
+                        closeMenu();
+                    }
+                });
+            }
+
             // Region Guide Logic
             const regionGuideBtn = document.getElementById('region-guide-btn');
             const regionGuidePage = document.getElementById('region-guide-page');
             const closeRegionGuideBtn = document.getElementById('close-region-guide');
 
+            const openRegionGuide = () => {
+                regionGuidePage?.classList.remove('translate-x-full');
+                lockPage();
+            };
+
+            const closeRegionGuide = () => {
+                regionGuidePage?.classList.add('translate-x-full');
+                setTimeout(() => {
+                    unlockPage();
+                }, 300);
+            };
+
             if (regionGuideBtn && regionGuidePage && closeRegionGuideBtn) {
                 regionGuideBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     triggerHaptic('light');
-                    regionGuidePage.classList.remove('translate-x-full');
-                    document.body.style.overflow = 'hidden';
+                    openRegionGuide();
                 });
 
                 closeRegionGuideBtn.addEventListener('click', () => {
                     triggerHaptic('light');
-                    regionGuidePage.classList.add('translate-x-full');
-                    setTimeout(() => {
-                        document.body.style.overflow = '';
-                    }, 300);
+                    closeRegionGuide();
                 });
             }
+
+            menuRegionGuideBtn?.addEventListener('click', () => {
+                triggerHaptic('light');
+                closeMenu({ keepLocked: true });
+                openRegionGuide();
+            });
 
             const modal = document.getElementById('product-modal');
             const backdrop = document.getElementById('modal-backdrop');
@@ -846,7 +1072,7 @@
                 void modal.offsetWidth;
                 modal.classList.remove('opacity-0');
                 content.classList.remove('translate-y-full');
-                document.body.style.overflow = 'hidden';
+                lockPage();
             };
 
             const closeModal = () => {
@@ -856,7 +1082,7 @@
                 // Wait for transition to finish before hiding completely
                 setTimeout(() => {
                     modal.classList.add('pointer-events-none');
-                    document.body.style.overflow = '';
+                    unlockPage();
                 }, 300);
             };
 
@@ -871,32 +1097,61 @@
 
             // Tab Filtering Logic
             const tabBtns = document.querySelectorAll('.tab-btn');
+            const menuCategoryBtns = document.querySelectorAll('.menu-category-btn');
             const productCards = document.querySelectorAll('.product-card');
+
+            const setActiveCategory = (category) => {
+                tabBtns.forEach(btn => {
+                    const isActive = btn.getAttribute('data-category') === category;
+
+                    btn.classList.toggle('bg-primary-container', isActive);
+                    btn.classList.toggle('text-on-primary', isActive);
+                    btn.classList.toggle('shadow-[0_0_20px_rgba(163,230,53,0.4)]', isActive);
+                    btn.classList.toggle('border-primary-container/20', isActive);
+                    btn.classList.toggle('bg-surface-container/50', !isActive);
+                    btn.classList.toggle('text-on-surface-variant', !isActive);
+                    btn.classList.toggle('border-white/10', !isActive);
+                    btn.classList.toggle('hover:border-primary-container/50', !isActive);
+                    btn.classList.toggle('hover:text-primary-container', !isActive);
+                });
+
+                menuCategoryBtns.forEach(btn => {
+                    const isActive = btn.getAttribute('data-category') === category;
+
+                    btn.classList.toggle('bg-primary-container', isActive);
+                    btn.classList.toggle('text-on-primary', isActive);
+                    btn.classList.toggle('border-primary-container/30', isActive);
+                    btn.classList.toggle('shadow-[0_0_24px_rgba(163,230,53,0.28)]', isActive);
+                    btn.classList.toggle('bg-surface-container/50', !isActive);
+                    btn.classList.toggle('text-on-surface-variant', !isActive);
+                    btn.classList.toggle('border-white/10', !isActive);
+                    btn.classList.toggle('hover:border-primary-container/40', !isActive);
+                    btn.classList.toggle('hover:text-primary-container', !isActive);
+                    btn.querySelector('.menu-check')?.classList.toggle('hidden', !isActive);
+                });
+
+                productCards.forEach(card => {
+                    const shouldShow = category === 'all' || card.getAttribute('data-category') === category;
+                    card.style.display = shouldShow ? 'flex' : 'none';
+                });
+            };
 
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     triggerHaptic('selection');
-                    // Reset styling for all tabs
-                    tabBtns.forEach(b => {
-                        b.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
-                        b.classList.add('bg-surface-container/50', 'text-on-surface-variant', 'border-white/10', 'hover:border-primary-container/50', 'hover:text-primary-container');
-                    });
-
-                    // Add active styling to clicked tab
-                    btn.classList.remove('bg-surface-container/50', 'text-on-surface-variant', 'border-white/10', 'hover:border-primary-container/50', 'hover:text-primary-container');
-                    btn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
-
-                    const category = btn.getAttribute('data-category');
-
-                    productCards.forEach(card => {
-                        if (category === 'all' || card.getAttribute('data-category') === category) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    setActiveCategory(btn.getAttribute('data-category'));
                 });
             });
+
+            menuCategoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    triggerHaptic('selection');
+                    setActiveCategory(btn.getAttribute('data-category'));
+                    closeMenu();
+                });
+            });
+
+            setActiveCategory('all');
 
             document.querySelectorAll('.product-card').forEach(card => {
                 card.classList.add('cursor-pointer');
