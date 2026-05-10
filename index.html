@@ -160,6 +160,189 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        @property --swipe-x {
+            syntax: "<length>";
+            inherits: false;
+            initial-value: 0px;
+        }
+
+        @property --swipe-y {
+            syntax: "<length>";
+            inherits: false;
+            initial-value: 0px;
+        }
+
+        @property --tilt-x {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        @property --tilt-y {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        @keyframes page-rise {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.985);
+                filter: blur(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes card-pop {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 22px, 0) scale(0.96);
+                filter: blur(10px);
+            }
+
+            65% {
+                opacity: 1;
+                transform: translate3d(0, -2px, 0) scale(1.012);
+                filter: blur(0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes soft-pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.65;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 0.9;
+            }
+        }
+
+        .motion-surface {
+            animation: page-rise 650ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+        }
+
+        .product-grid {
+            perspective: 900px;
+            transform-style: preserve-3d;
+        }
+
+        .product-grid .product-card {
+            min-height: 242px;
+            opacity: 0;
+            transform: translate3d(0, 18px, 0) scale(0.98);
+            transform-origin: center bottom;
+            transition:
+                opacity 320ms ease,
+                transform 380ms cubic-bezier(0.18, 0.9, 0.2, 1),
+                filter 320ms ease,
+                border-color 220ms ease,
+                background-color 220ms ease,
+                box-shadow 220ms ease;
+            will-change: transform, opacity, filter;
+            touch-action: pan-y;
+        }
+
+        .product-grid .product-card.is-visible {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1);
+            animation: card-pop 520ms cubic-bezier(0.18, 0.9, 0.2, 1) both;
+            animation-delay: var(--stagger, 0ms);
+        }
+
+        .product-grid .product-card.is-hiding {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate3d(0, 14px, 0) scale(0.94);
+            filter: blur(8px);
+        }
+
+        .product-grid .product-card.is-pressing {
+            z-index: 2;
+            transform: translate3d(var(--swipe-x), var(--swipe-y), 0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(0.985);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.42), 0 0 24px rgba(163, 230, 53, 0.12);
+        }
+
+        .product-grid .product-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0;
+            background: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 30%), rgba(204, 255, 128, 0.18), transparent 42%);
+            transition: opacity 220ms ease;
+        }
+
+        .product-grid .product-card.is-pressing::after,
+        .product-grid .product-card:hover::after {
+            opacity: 1;
+        }
+
+        .hero-ambient::before {
+            content: "";
+            position: absolute;
+            inset: -40% -20% auto;
+            height: 75%;
+            background: radial-gradient(circle, rgba(204, 255, 128, 0.16), transparent 60%);
+            animation: soft-pulse 4.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        #product-modal,
+        #region-guide-page,
+        #modal-content {
+            transition-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
+
+        #modal-content {
+            touch-action: pan-y;
+            will-change: transform;
+        }
+
+        #modal-content.is-dragging {
+            transition-duration: 0ms;
+        }
+
+        #region-guide-page {
+            will-change: transform;
+        }
+
+        #region-guide-page.is-dragging {
+            transition-duration: 0ms;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 1ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 1ms !important;
+            }
+
+            .product-grid .product-card,
+            .product-grid .product-card.is-visible,
+            .product-grid .product-card.is-pressing {
+                filter: none;
+                transform: none;
+            }
+        }
     </style>
     <style>
         :root {
@@ -173,10 +356,14 @@
             margin: 0;
             background-color: #101415;
             overscroll-behavior-y: none;
+            scroll-behavior: smooth;
         }
 
         body {
             min-height: 100dvh;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
     </style>
 </head>
@@ -198,10 +385,10 @@
         </button>
     </header>
     <!-- Main Canvas -->
-    <main class="pt-[80px] pb-10 px-4 space-y-6">
+    <main class="motion-surface pt-[80px] pb-10 px-4 space-y-6">
         <!-- Promo Banner -->
         <section
-            class="relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
+            class="hero-ambient relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
             <img alt="Gaming Promo Banner"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 data-alt="A highly detailed, futuristic gaming banner scene. A sleek digital card floats weightlessly in a deep, dark void, illuminated by intense, glowing lime green neon rim lights. The background features subtle, abstract circuitry and geometric patterns, creating a cyberpunk, high-end digital aesthetic that perfectly matches a high-contrast dark mode UI."
@@ -254,7 +441,7 @@
                 class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-container transition-colors">chevron_right</span>
         </a>
         <!-- Product Grid -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="product-grid grid grid-cols-2 gap-4" id="product-grid">
             <!-- Card 1 -->
             <div data-category="appstore"
                 class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
@@ -750,11 +937,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.Telegram?.WebApp) {
-                Telegram.WebApp.ready();
-                Telegram.WebApp.expand();
-                Telegram.WebApp.setBackgroundColor('#101415');
-                Telegram.WebApp.setHeaderColor('#09090b');
+            const tg = window.Telegram?.WebApp;
+
+            if (tg) {
+                tg.ready();
+                tg.expand();
+                tg.setBackgroundColor('#101415');
+                tg.setHeaderColor('#09090b');
             }
 
             // Region Guide Logic
@@ -763,17 +952,62 @@
             const closeRegionGuideBtn = document.getElementById('close-region-guide');
 
             if (regionGuideBtn && regionGuidePage && closeRegionGuideBtn) {
-                regionGuideBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
+                const openRegionGuide = () => {
                     regionGuidePage.classList.remove('translate-x-full');
                     document.body.style.overflow = 'hidden';
-                });
+                };
 
-                closeRegionGuideBtn.addEventListener('click', () => {
+                const closeRegionGuide = () => {
                     regionGuidePage.classList.add('translate-x-full');
+                    regionGuidePage.style.transform = '';
                     setTimeout(() => {
                         document.body.style.overflow = '';
-                    }, 300);
+                    }, 360);
+                };
+
+                regionGuideBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openRegionGuide();
+                });
+
+                closeRegionGuideBtn.addEventListener('click', closeRegionGuide);
+
+                let guideStartX = 0;
+                let guideStartY = 0;
+                let guideDeltaX = 0;
+                let guideDragging = false;
+
+                regionGuidePage.addEventListener('touchstart', (e) => {
+                    if (regionGuidePage.scrollTop > 6 || e.touches[0].clientX > 44) return;
+                    guideStartX = e.touches[0].clientX;
+                    guideStartY = e.touches[0].clientY;
+                    guideDeltaX = 0;
+                    guideDragging = true;
+                    regionGuidePage.classList.add('is-dragging');
+                }, { passive: true });
+
+                regionGuidePage.addEventListener('touchmove', (e) => {
+                    if (!guideDragging) return;
+                    const touch = e.touches[0];
+                    guideDeltaX = Math.max(0, touch.clientX - guideStartX);
+                    const deltaY = Math.abs(touch.clientY - guideStartY);
+
+                    if (guideDeltaX < deltaY) return;
+
+                    regionGuidePage.style.transform = `translateX(${guideDeltaX}px)`;
+                }, { passive: true });
+
+                regionGuidePage.addEventListener('touchend', () => {
+                    if (!guideDragging) return;
+                    guideDragging = false;
+                    regionGuidePage.classList.remove('is-dragging');
+
+                    if (guideDeltaX > Math.min(window.innerWidth * 0.28, 120)) {
+                        closeRegionGuide();
+                        tg?.HapticFeedback?.impactOccurred?.('light');
+                    } else {
+                        regionGuidePage.style.transform = '';
+                    }
                 });
             }
 
@@ -816,30 +1050,109 @@
                     .join('');
 
                 modal.classList.remove('pointer-events-none');
+                content.style.transform = '';
                 // Trigger reflow for transition
                 void modal.offsetWidth;
                 modal.classList.remove('opacity-0');
                 content.classList.remove('translate-y-full');
                 document.body.style.overflow = 'hidden';
+                tg?.HapticFeedback?.impactOccurred?.('light');
             };
 
             const closeModal = () => {
                 modal.classList.add('opacity-0');
                 content.classList.add('translate-y-full');
+                content.style.transform = '';
 
                 // Wait for transition to finish before hiding completely
                 setTimeout(() => {
                     modal.classList.add('pointer-events-none');
                     document.body.style.overflow = '';
-                }, 300);
+                }, 360);
             };
 
             backdrop.addEventListener('click', closeModal);
             closeBtn.addEventListener('click', closeModal);
 
+            let modalStartY = 0;
+            let modalDeltaY = 0;
+            let modalDragging = false;
+
+            content.addEventListener('touchstart', (e) => {
+                if (content.scrollTop > 4) return;
+                modalStartY = e.touches[0].clientY;
+                modalDeltaY = 0;
+                modalDragging = true;
+                content.classList.add('is-dragging');
+            }, { passive: true });
+
+            content.addEventListener('touchmove', (e) => {
+                if (!modalDragging) return;
+                modalDeltaY = Math.max(0, e.touches[0].clientY - modalStartY);
+                const easedY = modalDeltaY < 180 ? modalDeltaY : 180 + (modalDeltaY - 180) * 0.35;
+                const opacity = Math.max(0.25, 1 - modalDeltaY / 420);
+
+                content.style.transform = `translateY(${easedY}px)`;
+                modal.style.opacity = opacity;
+            }, { passive: true });
+
+            content.addEventListener('touchend', () => {
+                if (!modalDragging) return;
+                modalDragging = false;
+                content.classList.remove('is-dragging');
+                modal.style.opacity = '';
+
+                if (modalDeltaY > 110) {
+                    closeModal();
+                    tg?.HapticFeedback?.impactOccurred?.('medium');
+                } else {
+                    content.style.transform = '';
+                }
+            });
+
             // Tab Filtering Logic
             const tabBtns = document.querySelectorAll('.tab-btn');
-            const productCards = document.querySelectorAll('.product-card');
+            const productCards = Array.from(document.querySelectorAll('.product-card'));
+
+            const revealCards = (cards) => {
+                cards.forEach((card, index) => {
+                    card.style.setProperty('--stagger', `${Math.min(index * 55, 360)}ms`);
+                    requestAnimationFrame(() => {
+                        card.classList.add('is-visible');
+                    });
+                });
+            };
+
+            const showCardsForCategory = (category) => {
+                const visibleCards = productCards.filter(card => (
+                    category === 'all' || card.getAttribute('data-category') === category
+                ));
+
+                productCards.forEach(card => {
+                    const shouldShow = visibleCards.includes(card);
+
+                    if (shouldShow) {
+                        card.classList.remove('is-hiding');
+                        card.style.display = 'flex';
+                        card.style.setProperty('--tilt-x', '0deg');
+                        card.style.setProperty('--tilt-y', '0deg');
+                        card.style.setProperty('--swipe-x', '0px');
+                        card.style.setProperty('--swipe-y', '0px');
+                    } else {
+                        card.classList.add('is-hiding');
+                        card.classList.remove('is-visible');
+                        setTimeout(() => {
+                            if (card.classList.contains('is-hiding')) {
+                                card.style.display = 'none';
+                            }
+                        }, 340);
+                    }
+                });
+
+                revealCards(visibleCards);
+            };
+
+            revealCards(productCards);
 
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -854,20 +1167,75 @@
                     btn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
 
                     const category = btn.getAttribute('data-category');
-
-                    productCards.forEach(card => {
-                        if (category === 'all' || card.getAttribute('data-category') === category) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    showCardsForCategory(category);
+                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    tg?.HapticFeedback?.selectionChanged?.();
                 });
             });
 
-            document.querySelectorAll('.product-card').forEach(card => {
+            productCards.forEach(card => {
+                let startX = 0;
+                let startY = 0;
+                let moved = false;
+
                 card.classList.add('cursor-pointer');
+
+                card.addEventListener('pointerdown', (e) => {
+                    if (e.pointerType === 'mouse' && e.button !== 0) return;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    moved = false;
+                    card.classList.add('is-pressing');
+                    card.setPointerCapture?.(e.pointerId);
+                });
+
+                card.addEventListener('pointermove', (e) => {
+                    if (!card.classList.contains('is-pressing')) return;
+
+                    const rect = card.getBoundingClientRect();
+                    const localX = e.clientX - rect.left;
+                    const localY = e.clientY - rect.top;
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
+
+                    if (Math.abs(deltaX) > 7 || Math.abs(deltaY) > 7) {
+                        moved = true;
+                    }
+
+                    card.style.setProperty('--glow-x', `${(localX / rect.width) * 100}%`);
+                    card.style.setProperty('--glow-y', `${(localY / rect.height) * 100}%`);
+                    card.style.setProperty('--tilt-y', `${Math.max(-5, Math.min(5, (localX / rect.width - 0.5) * 9))}deg`);
+                    card.style.setProperty('--tilt-x', `${Math.max(-5, Math.min(5, (0.5 - localY / rect.height) * 9))}deg`);
+
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                        card.style.setProperty('--swipe-x', `${Math.max(-12, Math.min(12, deltaX * 0.18))}px`);
+                        card.style.setProperty('--swipe-y', `${Math.max(-4, Math.min(4, deltaY * 0.08))}px`);
+                    }
+                });
+
+                const settleCard = (e) => {
+                    card.classList.remove('is-pressing');
+                    card.style.setProperty('--tilt-x', '0deg');
+                    card.style.setProperty('--tilt-y', '0deg');
+                    card.style.setProperty('--swipe-x', '0px');
+                    card.style.setProperty('--swipe-y', '0px');
+                    if (card.hasPointerCapture?.(e.pointerId)) {
+                        card.releasePointerCapture(e.pointerId);
+                    }
+                };
+
+                card.addEventListener('pointerup', settleCard);
+                card.addEventListener('pointercancel', settleCard);
+                card.addEventListener('pointerleave', (e) => {
+                    if (e.pointerType === 'mouse') settleCard(e);
+                });
+
                 card.addEventListener('click', () => {
+                    if (moved) {
+                        moved = false;
+                        return;
+                    }
+
                     const imgSrc = card.querySelector('img').src;
                     const value = card.querySelector('.absolute.bottom-2.left-2').textContent;
                     const title = card.querySelector('h4').textContent;
