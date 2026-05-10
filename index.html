@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <title>Цифра Store</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- Material Symbols -->
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -161,8 +162,21 @@
         }
     </style>
     <style>
+        :root {
+            background-color: #101415;
+            color-scheme: dark;
+        }
+
+        html,
         body {
-            min-height: max(884px, 100dvh);
+            min-height: 100%;
+            margin: 0;
+            background-color: #101415;
+            overscroll-behavior-y: none;
+        }
+
+        body {
+            min-height: 100dvh;
         }
     </style>
 </head>
@@ -736,6 +750,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            if (window.Telegram?.WebApp) {
+                Telegram.WebApp.ready();
+                Telegram.WebApp.expand();
+                Telegram.WebApp.setBackgroundColor('#101415');
+                Telegram.WebApp.setHeaderColor('#09090b');
+            }
+
             // Region Guide Logic
             const regionGuideBtn = document.getElementById('region-guide-btn');
             const regionGuidePage = document.getElementById('region-guide-page');
