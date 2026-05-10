@@ -757,6 +757,21 @@
                 Telegram.WebApp.setHeaderColor('#09090b');
             }
 
+            const triggerHaptic = (type = 'light') => {
+                const haptic = window.Telegram?.WebApp?.HapticFeedback;
+
+                if (!haptic) {
+                    return;
+                }
+
+                if (type === 'selection') {
+                    haptic.selectionChanged();
+                    return;
+                }
+
+                haptic.impactOccurred(type);
+            };
+
             // Region Guide Logic
             const regionGuideBtn = document.getElementById('region-guide-btn');
             const regionGuidePage = document.getElementById('region-guide-page');
@@ -765,11 +780,13 @@
             if (regionGuideBtn && regionGuidePage && closeRegionGuideBtn) {
                 regionGuideBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    triggerHaptic('light');
                     regionGuidePage.classList.remove('translate-x-full');
                     document.body.style.overflow = 'hidden';
                 });
 
                 closeRegionGuideBtn.addEventListener('click', () => {
+                    triggerHaptic('light');
                     regionGuidePage.classList.add('translate-x-full');
                     setTimeout(() => {
                         document.body.style.overflow = '';
@@ -834,8 +851,14 @@
                 }, 300);
             };
 
-            backdrop.addEventListener('click', closeModal);
-            closeBtn.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', () => {
+                triggerHaptic('light');
+                closeModal();
+            });
+            closeBtn.addEventListener('click', () => {
+                triggerHaptic('light');
+                closeModal();
+            });
 
             // Tab Filtering Logic
             const tabBtns = document.querySelectorAll('.tab-btn');
@@ -843,6 +866,7 @@
 
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
+                    triggerHaptic('selection');
                     // Reset styling for all tabs
                     tabBtns.forEach(b => {
                         b.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
@@ -868,6 +892,7 @@
             document.querySelectorAll('.product-card').forEach(card => {
                 card.classList.add('cursor-pointer');
                 card.addEventListener('click', () => {
+                    triggerHaptic('medium');
                     const imgSrc = card.querySelector('img').src;
                     const value = card.querySelector('.absolute.bottom-2.left-2').textContent;
                     const title = card.querySelector('h4').textContent;
@@ -875,6 +900,10 @@
                     const category = card.getAttribute('data-category');
                     openModal(imgSrc, title, value, price, category);
                 });
+            });
+
+            document.querySelector('#modal-content .sticky button')?.addEventListener('click', () => {
+                triggerHaptic('heavy');
             });
         });
     </script>
