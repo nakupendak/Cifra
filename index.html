@@ -205,18 +205,18 @@
             </div>
         </section>
         <!-- Filter Tabs -->
-        <nav class="flex overflow-x-auto hide-scrollbar gap-3 -mx-4 px-4 py-4 -my-2">
-            <button
-                class="shrink-0 font-label-bold px-6 py-2.5 rounded-full transition-all duration-300 bg-primary-container text-on-primary shadow-[0_0_20px_rgba(163,230,53,0.4)] border border-primary-container/20 active:scale-95">
+        <nav class="flex overflow-x-auto hide-scrollbar gap-3 -mx-4 px-4 py-4 -my-2" id="category-tabs">
+            <button data-category="all"
+                class="tab-btn shrink-0 font-label-bold px-6 py-2.5 rounded-full transition-all duration-300 bg-primary-container text-on-primary shadow-[0_0_20px_rgba(163,230,53,0.4)] border border-primary-container/20 active:scale-95">
                 Все
             </button>
-            <button
-                class="shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container">
-                AppStore Турция
+            <button data-category="appstore"
+                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95">
+                App Store Турция
             </button>
-            <button
-                class="shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container">
-                Steam
+            <button data-category="psn"
+                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95">
+                PSN
             </button>
         </nav>
         <!-- Instructions Block -->
@@ -238,8 +238,8 @@
         <!-- Product Grid -->
         <div class="grid grid-cols-2 gap-4">
             <!-- Card 1 -->
-            <div
-                class="bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+            <div data-category="appstore"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
                 <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
                     <img alt="Gift Card"
                         class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
@@ -259,8 +259,8 @@
                 </div>
             </div>
             <!-- Card 2 -->
-            <div
-                class="bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+            <div data-category="appstore"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
                 <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
                     <img alt="Gift Card"
                         class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
@@ -280,8 +280,8 @@
                 </div>
             </div>
             <!-- Card 3 -->
-            <div
-                class="bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+            <div data-category="appstore"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
                 <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
                     <img alt="Gift Card"
                         class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
@@ -292,7 +292,7 @@
                 <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
                 <div class="flex items-end justify-between mt-auto">
                     <div class="flex flex-col">
-                        <span class="font-headline-md text-primary-container leading-none">1259 ₽</span>
+                        <span class="font-headline-md text-primary-container leading-none">1290 ₽</span>
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
@@ -301,8 +301,8 @@
                 </div>
             </div>
             <!-- Card 4 -->
-            <div
-                class="bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+            <div data-category="appstore"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
                 <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
                     <img alt="Gift Card"
                         class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
@@ -313,7 +313,91 @@
                 <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
                 <div class="flex items-end justify-between mt-auto">
                     <div class="flex flex-col">
-                        <span class="font-headline-md text-primary-container leading-none">2399 ₽</span>
+                        <span class="font-headline-md text-primary-container leading-none">2390 ₽</span>
+                    </div>
+                    <button
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
+                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card PSN 250 -->
+            <div data-category="psn"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+                <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
+                    <img alt="Gift Card"
+                        class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                        src="psn250.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                    <span class="absolute bottom-2 left-2 font-headline-md text-white">₺250</span>
+                </div>
+                <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
+                <div class="flex items-end justify-between mt-auto">
+                    <div class="flex flex-col">
+                        <span class="font-headline-md text-primary-container leading-none">649 ₽</span>
+                    </div>
+                    <button
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
+                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div data-category="psn"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+                <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
+                    <img alt="Gift Card"
+                        class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                        src="psn500.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                    <span class="absolute bottom-2 left-2 font-headline-md text-white">₺500</span>
+                </div>
+                <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
+                <div class="flex items-end justify-between mt-auto">
+                    <div class="flex flex-col">
+                        <span class="font-headline-md text-primary-container leading-none">1290 ₽</span>
+                    </div>
+                    <button
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
+                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div data-category="psn"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+                <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
+                    <img alt="Gift Card"
+                        class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                        src="psn1000.png" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                    <span class="absolute bottom-2 left-2 font-headline-md text-white">₺1000</span>
+                </div>
+                <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
+                <div class="flex items-end justify-between mt-auto">
+                    <div class="flex flex-col">
+                        <span class="font-headline-md text-primary-container leading-none">2290 ₽</span>
+                    </div>
+                    <button
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
+                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 7 -->
+            <div data-category="psn"
+                class="product-card bg-surface-container/20 backdrop-blur-xl border border-white/10 rounded-xl p-3 flex flex-col relative group hover:border-primary-container/40 transition-colors">
+                <div class="relative w-full rounded-lg overflow-hidden mb-3 border border-white/5">
+                    <img alt="Gift Card"
+                        class="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                        src="psn2500.jpg" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                    <span class="absolute bottom-2 left-2 font-headline-md text-white">₺2500</span>
+                </div>
+                <h4 class="font-label-bold text-on-surface mb-2 leading-tight">Карта пополнения Турция</h4>
+                <div class="flex items-end justify-between mt-auto">
+                    <div class="flex flex-col">
+                        <span class="font-headline-md text-primary-container leading-none">5990 ₽</span>
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
@@ -622,7 +706,35 @@
             backdrop.addEventListener('click', closeModal);
             closeBtn.addEventListener('click', closeModal);
 
-            document.querySelectorAll('.grid > div').forEach(card => {
+            // Tab Filtering Logic
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const productCards = document.querySelectorAll('.product-card');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset styling for all tabs
+                    tabBtns.forEach(b => {
+                        b.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
+                        b.classList.add('bg-surface-container/50', 'text-on-surface-variant', 'border-white/10', 'hover:border-primary-container/50', 'hover:text-primary-container');
+                    });
+
+                    // Add active styling to clicked tab
+                    btn.classList.remove('bg-surface-container/50', 'text-on-surface-variant', 'border-white/10', 'hover:border-primary-container/50', 'hover:text-primary-container');
+                    btn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-[0_0_20px_rgba(163,230,53,0.4)]', 'border-primary-container/20');
+
+                    const category = btn.getAttribute('data-category');
+
+                    productCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.product-card').forEach(card => {
                 card.classList.add('cursor-pointer');
                 card.addEventListener('click', () => {
                     const imgSrc = card.querySelector('img').src;
