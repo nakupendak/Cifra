@@ -228,6 +228,59 @@
         .side-menu-open .side-menu-item:nth-child(4) {
             transition-delay: 230ms;
         }
+
+        .filter-tabs-scroll {
+            margin-block: -24px;
+            padding-block: 24px;
+            scroll-padding-inline: 16px;
+        }
+
+        .tab-btn {
+            position: relative;
+            isolation: isolate;
+            overflow: visible;
+        }
+
+        .tab-btn::before,
+        .tab-btn::after {
+            content: "";
+            position: absolute;
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 300ms ease;
+        }
+
+        .tab-btn::before {
+            inset: -10px -22px;
+            z-index: -1;
+            background: radial-gradient(ellipse at center,
+                    rgba(163, 230, 53, 0.38) 0%,
+                    rgba(163, 230, 53, 0.2) 42%,
+                    rgba(163, 230, 53, 0) 72%);
+            filter: blur(10px);
+        }
+
+        .tab-btn::after {
+            inset: -5px;
+            z-index: -1;
+            background: radial-gradient(ellipse at center,
+                    rgba(220, 255, 150, 0.2) 0%,
+                    rgba(163, 230, 53, 0.08) 48%,
+                    rgba(163, 230, 53, 0) 78%);
+            filter: blur(6px);
+        }
+
+        .tab-btn-active::before,
+        .tab-btn-active::after {
+            opacity: 1;
+        }
+
+        .tab-btn-active {
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.24),
+                0 6px 16px rgba(163, 230, 53, 0.16);
+        }
     </style>
 </head>
 
@@ -275,11 +328,11 @@
                     <span class="flex items-center justify-between gap-3">
                         <span class="flex min-w-0 items-center gap-3">
                             <span
-                                class="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined text-[21px]">apps</span>
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary-container text-[21px]">apps</span>
                             </span>
                             <span class="min-w-0">
-                                <span class="block font-label-bold text-base leading-tight">Все товары</span>
+                                <span class="block font-label-bold text-base leading-tight">Все</span>
                                 <span class="block font-caption opacity-75 mt-1">Весь каталог</span>
                             </span>
                         </span>
@@ -291,13 +344,11 @@
                     <span class="flex items-center justify-between gap-3">
                         <span class="flex min-w-0 items-center gap-3">
                             <span
-                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined text-primary-container text-[21px]">redeem</span>
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                                <img src="applelogo.png" alt="" class="h-6 w-6 object-contain">
                             </span>
                             <span class="min-w-0">
-                                <span class="block font-label-bold text-base leading-tight">Apple
-                                    Турция</span>
-                                <span class="block font-caption mt-1">Подарочные карты ₺</span>
+                                <span class="block font-label-bold text-base leading-tight">Apple Турция</span>
                             </span>
                         </span>
                         <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
@@ -308,14 +359,11 @@
                     <span class="flex items-center justify-between gap-3">
                         <span class="flex min-w-0 items-center gap-3">
                             <span
-                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
-                                <span
-                                    class="material-symbols-outlined text-primary-container text-[21px]">public</span>
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                                <img src="applelogo.png" alt="" class="h-6 w-6 object-contain">
                             </span>
                             <span class="min-w-0">
-                                <span class="block font-label-bold text-base leading-tight">Apple
-                                    США</span>
-                                <span class="block font-caption mt-1">Подарочные карты $</span>
+                                <span class="block font-label-bold text-base leading-tight">Apple США</span>
                             </span>
                         </span>
                         <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
@@ -326,13 +374,11 @@
                     <span class="flex items-center justify-between gap-3">
                         <span class="flex min-w-0 items-center gap-3">
                             <span
-                                class="w-10 h-10 rounded-full bg-surface-variant/60 flex items-center justify-center shrink-0">
-                                <span
-                                    class="material-symbols-outlined text-primary-container text-[21px]">sports_esports</span>
+                                class="w-10 h-10 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                                <img src="psnlogo.png" alt="" class="h-6 w-6 object-contain">
                             </span>
                             <span class="min-w-0">
-                                <span class="block font-label-bold text-base leading-tight">PSN</span>
-                                <span class="block font-caption mt-1">PlayStation Турция</span>
+                                <span class="block font-label-bold text-base leading-tight">PSN Турция</span>
                             </span>
                         </span>
                         <span class="menu-check material-symbols-outlined text-[22px] hidden">check_circle</span>
@@ -357,14 +403,15 @@
         </div>
     </aside>
     <!-- Main Canvas -->
-    <main class="pt-[80px] pb-10 px-4 space-y-6">
+    <main class="pt-[80px] pb-10 px-4 flex flex-col gap-6">
         <!-- Promo Banner -->
         <section
             class="relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
-            <img alt="Gaming Promo Banner"
+            <video aria-label="Gaming Promo Banner"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                data-alt="A highly detailed, futuristic gaming banner scene. A sleek digital card floats weightlessly in a deep, dark void, illuminated by intense, glowing lime green neon rim lights. The background features subtle, abstract circuitry and geometric patterns, creating a cyberpunk, high-end digital aesthetic that perfectly matches a high-contrast dark mode UI."
-                src="bg.jpg" />
+                autoplay muted loop playsinline>
+                <source src="bggif.mp4" type="video/mp4" />
+            </video>
             <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-5 w-full flex justify-between items-end">
                 <div>
@@ -378,22 +425,34 @@
             </div>
         </section>
         <!-- Filter Tabs -->
-        <nav class="flex overflow-x-auto hide-scrollbar gap-3 -mx-4 px-4 py-4 -my-2" id="category-tabs">
+        <nav class="filter-tabs-scroll flex overflow-x-auto hide-scrollbar gap-3 -mx-4 px-4" id="category-tabs">
             <button data-category="all"
-                class="tab-btn shrink-0 font-label-bold px-6 py-2.5 rounded-full transition-all duration-300 bg-primary-container text-on-primary shadow-[0_0_20px_rgba(163,230,53,0.4)] border border-primary-container/20 active:scale-95">
-                Все
+                class="tab-btn tab-btn-active shrink-0 font-label-bold px-6 py-2.5 rounded-full transition-all duration-300 bg-primary-container text-on-primary border border-primary-container/20 active:scale-95 flex items-center gap-2">
+                <span class="h-5 w-5 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-primary-container text-[15px]">apps</span>
+                </span>
+                <span>Все</span>
             </button>
             <button data-category="appstore"
-                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95">
-                Apple Турция
+                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95 flex items-center gap-2">
+                <span class="h-5 w-5 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                    <img src="applelogo.png" alt="" class="h-3.5 w-3.5 object-contain">
+                </span>
+                <span>Apple Турция</span>
             </button>
             <button data-category="apple-us"
-                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95">
-                Apple США
+                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95 flex items-center gap-2">
+                <span class="h-5 w-5 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                    <img src="applelogo.png" alt="" class="h-3.5 w-3.5 object-contain">
+                </span>
+                <span>Apple США</span>
             </button>
             <button data-category="psn"
-                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95">
-                PSN
+                class="tab-btn shrink-0 font-label-bold px-5 py-2.5 rounded-full transition-all duration-300 bg-surface-container/50 backdrop-blur-md text-on-surface-variant border border-white/10 hover:border-primary-container/50 hover:text-primary-container active:scale-95 flex items-center gap-2">
+                <span class="h-5 w-5 rounded-full bg-surface-variant/60 border border-white/10 flex items-center justify-center shrink-0">
+                    <img src="psnlogo.png" alt="" class="h-3.5 w-3.5 object-contain">
+                </span>
+                <span>PSN Турция</span>
             </button>
         </nav>
         <!-- Instructions Block -->
@@ -1104,9 +1163,9 @@
                 tabBtns.forEach(btn => {
                     const isActive = btn.getAttribute('data-category') === category;
 
+                    btn.classList.toggle('tab-btn-active', isActive);
                     btn.classList.toggle('bg-primary-container', isActive);
                     btn.classList.toggle('text-on-primary', isActive);
-                    btn.classList.toggle('shadow-[0_0_20px_rgba(163,230,53,0.4)]', isActive);
                     btn.classList.toggle('border-primary-container/20', isActive);
                     btn.classList.toggle('bg-surface-container/50', !isActive);
                     btn.classList.toggle('text-on-surface-variant', !isActive);
