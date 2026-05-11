@@ -968,11 +968,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.Telegram?.WebApp) {
-                Telegram.WebApp.ready();
-                Telegram.WebApp.expand();
-                Telegram.WebApp.setBackgroundColor('#101415');
-                Telegram.WebApp.setHeaderColor('#09090b');
+            const tg = window.Telegram?.WebApp;
+
+            if (tg) {
+                tg.ready();
+                tg.expand();
+                tg.setBackgroundColor('#101415');
+                tg.setHeaderColor('#09090b');
+
+                if (tg.isVersionAtLeast?.('8.0') && !tg.isFullscreen) {
+                    tg.requestFullscreen?.();
+                }
             }
 
             const triggerHaptic = (type = 'light') => {
