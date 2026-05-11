@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
     <title>Цифра Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- Material Symbols -->
@@ -182,6 +182,87 @@
             overflow-y: auto;
         }
 
+        :root {
+            --telegram-safe-top: 0px;
+            --app-safe-top: max(10px, env(safe-area-inset-top), var(--telegram-safe-top));
+            --app-header-row-height: 62px;
+            --app-header-height: calc(var(--app-safe-top) + var(--app-header-row-height));
+        }
+
+        .app-header {
+            box-sizing: border-box;
+            height: var(--app-header-height);
+            padding: var(--app-safe-top) 20px 8px;
+            background:
+                radial-gradient(circle at 50% 16%, rgba(163, 230, 53, 0.13), transparent 36%),
+                linear-gradient(180deg, rgba(6, 8, 9, 0.96), rgba(10, 13, 14, 0.82));
+        }
+
+        .app-header::after {
+            content: "";
+            position: absolute;
+            inset-inline: 0;
+            bottom: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(163, 230, 53, 0.32), transparent);
+            opacity: 0.75;
+        }
+
+        .app-header-row {
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-icon-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b8beb7;
+            background: rgba(25, 28, 30, 0.62);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 12px 28px rgba(0, 0, 0, 0.26);
+            transition:
+                transform 160ms ease,
+                color 200ms ease,
+                border-color 200ms ease,
+                background-color 200ms ease;
+        }
+
+        .app-icon-button:active {
+            transform: scale(0.94);
+        }
+
+        .app-icon-button:hover {
+            color: #a3e635;
+            border-color: rgba(163, 230, 53, 0.28);
+            background: rgba(36, 42, 34, 0.72);
+        }
+
+        .app-brand {
+            text-shadow:
+                0 0 18px rgba(163, 230, 53, 0.34),
+                0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .app-main {
+            padding-top: calc(var(--app-header-height) + 16px);
+        }
+
+        .side-menu-inner {
+            padding-top: calc(var(--app-safe-top) + 16px);
+        }
+
+        .region-guide-header {
+            padding-top: calc(var(--app-safe-top) + 12px);
+        }
+
         #region-guide-page,
         #modal-content {
             overscroll-behavior-y: contain;
@@ -287,18 +368,19 @@
 <body class="bg-background text-on-background font-body-md min-h-screen">
     <!-- TopAppBar -->
     <header
-        class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-zinc-950/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-        <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть меню"
-            class="w-11 h-11 -ml-3 text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
-            <span class="material-symbols-outlined">menu</span>
-        </button>
-        <h1 class="text-[28px] font-bold leading-none text-lime-400">
-            Цифра
-        </h1>
-        <button aria-label="Корзина"
-            class="w-11 h-11 -mr-3 text-zinc-400 hover:text-lime-300 transition-colors duration-200 active:scale-95 flex items-center justify-center">
-            <span class="material-symbols-outlined">shopping_cart</span>
-        </button>
+        class="app-header fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="app-header-row">
+            <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть меню"
+                class="app-icon-button">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h1 class="app-brand text-[30px] font-bold leading-none text-lime-400">
+                Цифра
+            </h1>
+            <button aria-label="Корзина" class="app-icon-button">
+                <span class="material-symbols-outlined">shopping_cart</span>
+            </button>
+        </div>
     </header>
 
     <!-- Side Menu -->
@@ -310,7 +392,7 @@
         <div
             class="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_28%_18%,rgba(163,230,53,0.22),transparent_45%)] pointer-events-none">
         </div>
-        <div class="relative flex h-full flex-col px-5 pt-4 pb-6">
+        <div class="side-menu-inner relative flex h-full flex-col px-5 pb-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="font-caption uppercase text-primary-container/80">Меню</p>
@@ -403,7 +485,7 @@
         </div>
     </aside>
     <!-- Main Canvas -->
-    <main class="pt-[80px] pb-10 px-4 flex flex-col gap-6">
+    <main class="app-main pb-10 px-4 flex flex-col gap-6">
         <!-- Promo Banner -->
         <section
             class="relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
@@ -733,7 +815,7 @@
         class="fixed inset-0 z-[100] bg-background transform translate-x-full transition-transform duration-300 overflow-y-auto">
         <!-- Header -->
         <header
-            class="sticky top-0 w-full z-50 flex items-center px-4 py-4 bg-background/90 backdrop-blur-xl border-b border-white/10">
+            class="region-guide-header sticky top-0 w-full z-50 flex items-center px-4 pb-4 bg-background/90 backdrop-blur-xl border-b border-white/10">
             <button id="close-region-guide"
                 class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 -ml-2 mr-2">
                 <span class="material-symbols-outlined text-[28px]">chevron_left</span>
@@ -971,13 +1053,36 @@
             const tg = window.Telegram?.WebApp;
 
             if (tg) {
+                const root = document.documentElement;
+                const getInset = (value) => {
+                    const number = Number(value);
+                    return Number.isFinite(number) && number > 0 ? number : 0;
+                };
+                const syncTelegramInsets = () => {
+                    const safeTop = getInset(tg.safeAreaInset?.top);
+                    const fullscreenFallback = tg.isFullscreen ? 44 : 0;
+
+                    root.style.setProperty('--telegram-safe-top', `${Math.max(safeTop, fullscreenFallback)}px`);
+                };
+
+                ['viewportChanged', 'fullscreenChanged', 'safeAreaChanged', 'contentSafeAreaChanged'].forEach((eventName) => {
+                    try {
+                        tg.onEvent?.(eventName, syncTelegramInsets);
+                    } catch (_) {
+                        // Older Telegram clients may not know every viewport event.
+                    }
+                });
+
                 tg.ready();
                 tg.expand();
                 tg.setBackgroundColor('#101415');
                 tg.setHeaderColor('#09090b');
+                syncTelegramInsets();
 
                 if (tg.isVersionAtLeast?.('8.0') && !tg.isFullscreen) {
+                    root.style.setProperty('--telegram-safe-top', '44px');
                     tg.requestFullscreen?.();
+                    window.setTimeout(syncTelegramInsets, 450);
                 }
             }
 
