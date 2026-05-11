@@ -184,27 +184,37 @@
 
         :root {
             --telegram-safe-top: 0px;
+            --telegram-safe-bottom: 0px;
             --app-safe-top: max(10px, env(safe-area-inset-top), var(--telegram-safe-top));
+            --app-safe-bottom: max(16px, env(safe-area-inset-bottom), var(--telegram-safe-bottom));
             --app-header-row-height: 62px;
             --app-header-height: calc(var(--app-safe-top) + var(--app-header-row-height));
         }
 
         .app-header {
-            position: absolute;
-            top: 0;
-            inset-inline: 0;
-            z-index: 50;
             box-sizing: border-box;
             height: var(--app-header-height);
             padding: var(--app-safe-top) 20px 8px;
-            background: transparent;
+            background:
+                radial-gradient(circle at 50% 16%, rgba(163, 230, 53, 0.13), transparent 36%),
+                linear-gradient(180deg, rgba(6, 8, 9, 0.96), rgba(10, 13, 14, 0.82));
+        }
+
+        .app-header::after {
+            content: "";
+            position: absolute;
+            inset-inline: 0;
+            bottom: -1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(163, 230, 53, 0.32), transparent);
+            opacity: 0.75;
         }
 
         .app-header-row {
             height: 54px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
         }
 
         .app-icon-button {
@@ -227,10 +237,6 @@
                 background-color 200ms ease;
         }
 
-        .app-header-row .app-icon-button {
-            margin-top: 82px;
-        }
-
         .app-icon-button:active {
             transform: scale(0.94);
         }
@@ -248,19 +254,60 @@
         }
 
         .app-main {
-            padding-top: calc(var(--app-header-height) + 40px);
+            padding-top: calc(var(--app-header-height) + 16px);
+            padding-bottom: calc(var(--app-safe-bottom) + 92px);
+        }
+
+        .catalog-fab {
+            position: fixed;
+            right: 18px;
+            bottom: calc(var(--app-safe-bottom) + 16px);
+            z-index: 60;
+            min-width: 58px;
+            height: 58px;
+            padding-inline: 17px 19px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #213600;
+            background: #a3e635;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.34),
+                0 14px 34px rgba(0, 0, 0, 0.42),
+                0 0 28px rgba(163, 230, 53, 0.28);
+            transition:
+                transform 160ms ease,
+                box-shadow 200ms ease,
+                background-color 200ms ease;
+        }
+
+        .catalog-fab:active {
+            transform: scale(0.94);
+        }
+
+        .catalog-fab:hover {
+            background: #b2f746;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.38),
+                0 16px 38px rgba(0, 0, 0, 0.45),
+                0 0 34px rgba(163, 230, 53, 0.36);
+        }
+
+        .catalog-fab-label {
+            font-size: 13px;
+            line-height: 1;
+            font-weight: 700;
         }
 
         .side-menu-inner {
-            padding-top: calc(var(--app-safe-top) + 16px);
+            padding-top: calc(var(--app-safe-top) + 52px);
         }
 
         .region-guide-header {
-            padding-top: calc(var(--app-safe-top) + 12px);
-        }
-
-        .region-guide-content {
-            padding-top: 24px;
+            padding-top: calc(var(--app-safe-top) + 52px);
         }
 
         #region-guide-page,
@@ -367,20 +414,20 @@
 
 <body class="bg-background text-on-background font-body-md min-h-screen">
     <!-- TopAppBar -->
-    <header class="app-header">
+    <header
+        class="app-header fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div class="app-header-row">
-            <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть меню"
-                class="app-icon-button">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
             <h1 class="app-brand text-[30px] font-bold leading-none text-lime-400">
                 Цифра
             </h1>
-            <button aria-label="Корзина" class="app-icon-button">
-                <span class="material-symbols-outlined">shopping_cart</span>
-            </button>
         </div>
     </header>
+
+    <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть каталог"
+        class="catalog-fab">
+        <span class="material-symbols-outlined text-[24px]">apps</span>
+        <span class="catalog-fab-label">Каталог</span>
+    </button>
 
     <!-- Side Menu -->
     <div id="menu-backdrop"
@@ -489,7 +536,7 @@
         <section
             class="relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
             <video aria-label="Gaming Promo Banner"
-                class="absolute inset-0 w-full h-full object-cover scale-105 transition-transform duration-700 group-hover:scale-110"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 autoplay muted loop playsinline>
                 <source src="bggif.mp4" type="video/mp4" />
             </video>
@@ -571,7 +618,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -592,7 +639,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -613,7 +660,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -634,7 +681,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -655,7 +702,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -676,7 +723,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -697,7 +744,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -718,7 +765,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -739,7 +786,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -760,7 +807,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -781,7 +828,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -802,7 +849,7 @@
                     </div>
                     <button
                         class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(163,230,53,0.4)] active:scale-90 transition-transform">
-                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -814,7 +861,7 @@
         class="fixed inset-0 z-[100] bg-background transform translate-x-full transition-transform duration-300 overflow-y-auto">
         <!-- Header -->
         <header
-            class="region-guide-header w-full flex items-center px-4 pb-4">
+            class="region-guide-header w-full flex items-center px-4 pb-4 bg-background/90 backdrop-blur-xl border-b border-white/10">
             <button id="close-region-guide"
                 class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 -ml-2 mr-2">
                 <span class="material-symbols-outlined text-[28px]">chevron_left</span>
@@ -823,7 +870,7 @@
         </header>
 
         <!-- Content -->
-        <div class="region-guide-content px-5 space-y-8 pb-20">
+        <div class="px-5 py-6 space-y-8 pb-20">
             <div class="space-y-4">
                 <h2 class="font-headline-lg text-primary-container leading-tight">Как сменить регион App Store</h2>
                 <p class="font-body-md text-on-surface-variant">Смена региона открывает доступ к приложениям,
@@ -1041,7 +1088,7 @@
                 <button
                     class="flex-1 bg-primary-container text-on-primary font-label-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(163,230,53,0.4)] active:scale-95 transition-transform">
                     <span>Купить</span>
-                    <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </button>
             </div>
         </div>
@@ -1059,9 +1106,13 @@
                 };
                 const syncTelegramInsets = () => {
                     const safeTop = getInset(tg.safeAreaInset?.top);
+                    const contentSafeTop = getInset(tg.contentSafeAreaInset?.top);
+                    const safeBottom = getInset(tg.safeAreaInset?.bottom);
+                    const contentSafeBottom = getInset(tg.contentSafeAreaInset?.bottom);
                     const fullscreenFallback = tg.isFullscreen ? 44 : 0;
 
-                    root.style.setProperty('--telegram-safe-top', `${Math.max(safeTop, fullscreenFallback)}px`);
+                    root.style.setProperty('--telegram-safe-top', `${Math.max(safeTop, contentSafeTop, fullscreenFallback)}px`);
+                    root.style.setProperty('--telegram-safe-bottom', `${Math.max(safeBottom, contentSafeBottom)}px`);
                 };
 
                 ['viewportChanged', 'fullscreenChanged', 'safeAreaChanged', 'contentSafeAreaChanged'].forEach((eventName) => {
