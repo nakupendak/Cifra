@@ -190,22 +190,14 @@
         }
 
         .app-header {
+            position: absolute;
+            top: 0;
+            inset-inline: 0;
+            z-index: 50;
             box-sizing: border-box;
             height: var(--app-header-height);
             padding: var(--app-safe-top) 20px 8px;
-            background:
-                radial-gradient(circle at 50% 16%, rgba(163, 230, 53, 0.13), transparent 36%),
-                linear-gradient(180deg, rgba(6, 8, 9, 0.96), rgba(10, 13, 14, 0.82));
-        }
-
-        .app-header::after {
-            content: "";
-            position: absolute;
-            inset-inline: 0;
-            bottom: -1px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(163, 230, 53, 0.32), transparent);
-            opacity: 0.75;
+            background: transparent;
         }
 
         .app-header-row {
@@ -235,6 +227,10 @@
                 background-color 200ms ease;
         }
 
+        .app-header-row .app-icon-button {
+            margin-top: 82px;
+        }
+
         .app-icon-button:active {
             transform: scale(0.94);
         }
@@ -252,7 +248,7 @@
         }
 
         .app-main {
-            padding-top: calc(var(--app-header-height) + 16px);
+            padding-top: calc(var(--app-header-height) + 40px);
         }
 
         .side-menu-inner {
@@ -261,6 +257,10 @@
 
         .region-guide-header {
             padding-top: calc(var(--app-safe-top) + 12px);
+        }
+
+        .region-guide-content {
+            padding-top: 24px;
         }
 
         #region-guide-page,
@@ -367,8 +367,7 @@
 
 <body class="bg-background text-on-background font-body-md min-h-screen">
     <!-- TopAppBar -->
-    <header
-        class="app-header fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+    <header class="app-header">
         <div class="app-header-row">
             <button id="menu-toggle" aria-controls="side-menu" aria-expanded="false" aria-label="Открыть меню"
                 class="app-icon-button">
@@ -490,7 +489,7 @@
         <section
             class="relative w-full h-48 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(163,230,53,0.15)] border border-white/10 group">
             <video aria-label="Gaming Promo Banner"
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                class="absolute inset-0 w-full h-full object-cover scale-105 transition-transform duration-700 group-hover:scale-110"
                 autoplay muted loop playsinline>
                 <source src="bggif.mp4" type="video/mp4" />
             </video>
@@ -815,7 +814,7 @@
         class="fixed inset-0 z-[100] bg-background transform translate-x-full transition-transform duration-300 overflow-y-auto">
         <!-- Header -->
         <header
-            class="region-guide-header sticky top-0 w-full z-50 flex items-center px-4 pb-4 bg-background/90 backdrop-blur-xl border-b border-white/10">
+            class="region-guide-header w-full flex items-center px-4 pb-4">
             <button id="close-region-guide"
                 class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors active:scale-95 -ml-2 mr-2">
                 <span class="material-symbols-outlined text-[28px]">chevron_left</span>
@@ -824,7 +823,7 @@
         </header>
 
         <!-- Content -->
-        <div class="px-5 py-6 space-y-8 pb-20">
+        <div class="region-guide-content px-5 space-y-8 pb-20">
             <div class="space-y-4">
                 <h2 class="font-headline-lg text-primary-container leading-tight">Как сменить регион App Store</h2>
                 <p class="font-body-md text-on-surface-variant">Смена региона открывает доступ к приложениям,
